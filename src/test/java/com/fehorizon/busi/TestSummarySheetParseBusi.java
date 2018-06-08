@@ -11,6 +11,8 @@ public class TestSummarySheetParseBusi extends TestBase {
 
     @Test
     public void testParseSummarySheet(){
+        long currentTime = System.currentTimeMillis();
         summarySheetParseBusi.parseSheet();
+        System.out.println("----------------------"+ (System.currentTimeMillis() - currentTime));
     }
 }

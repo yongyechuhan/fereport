@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,24 +36,30 @@ public class SummarySheetParseBusi extends ExcelParseBusi{
 
         int maxRow = sheet.getLastRowNum();
         int columnNum = 6;
-        int columnStartIndex = 0;
 
         // 从第2行开始读取数据
         for(int i = 2; i < maxRow; i++){
             Row row = sheet.getRow(i);
             int columnMax = row.getLastCellNum();
 
-            List<TestModel> testModels = null;
+            List<TestModel> testModels;
+            int columnStartIndex = 0;
             while(columnStartIndex < columnMax){
-                String fillMer = row.getCell(columnStartIndex + 1).getStringCellValue();
-                for(int j = 0; j < columnNum; j++){
-                    row.getCell(j).setCellType(Cell.CELL_TYPE_STRING);
+                for(int j = 1; j < columnNum; j++){
+                    Cell cell =  row.getCell(columnStartIndex + j);
+                    if (cell != null) {
+                        cell.setCellType(Cell.CELL_TYPE_STRING);
+                    }
                 }
+                String fillMer = getCellValue(row.getCell(columnStartIndex + 1));
+                String otherMer = getCellValue(row.getCell(columnStartIndex + 2));
+                String subjectName = getCellValue(row.getCell(columnStartIndex + 3));
+                String transAmt = getCellValue(row.getCell(columnStartIndex + 4));
+                String decideNum = getCellValue(row.getCell(columnStartIndex + 5));
 
-               String otherMer = row.getCell(columnStartIndex + 2).getStringCellValue();
-
-                //如果读出填报单位或对方单位为空，进行下一个单位
-                if(StringUtils.isEmpty(fillMer)){
+                //如果读出填报单位,对方单位科目名为空或金额为0，进行下一个6列计算
+                if(StringUtils.isEmpty(fillMer) || StringUtils.isEmpty(otherMer)
+                        || StringUtils.isEmpty(subjectName) || "0".equals(transAmt)){
                     columnStartIndex += columnNum;
                     continue;
                 }
@@ -64,23 +71,31 @@ public class SummarySheetParseBusi extends ExcelParseBusi{
                     transAmtMap.put(fillMer, testModels);
                 }
 
-                String subjectName = row.getCell(columnStartIndex + 3).getStringCellValue();
-                String transAmt = row.getCell(columnStartIndex + 4).getStringCellValue();
-                String decideNum = row.getCell(columnStartIndex + 5).getStringCellValue();
-
                 TestModel testModel = new TestModel();
                 testModel.setFillMer(fillMer);
                 testModel.setOtherMer(otherMer);
                 testModel.setSubjectName(subjectName);
+                //金额需要做保留两位数处理
+                BigDecimal bigDecimal = new BigDecimal(transAmt);
+                bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
                 testModel.setTransAmt(String.valueOf(transAmt));
                 testModel.setDecideNum(decideNum);
                 testModels.add(testModel);
 
                 columnStartIndex+=6;
-                break;
             }
         }
 
         logger.info(JSON.toJSONString(transAmtMap));
+    }
+
+    private String getCellValue(Cell cell){
+        if(cell == null) return null;
+        if(cell.getCellType() == Cell.CELL_TYPE_STRING)
+            return cell.getStringCellValue();
+        else if(cell.getCellType() == Cell.CELL_TYPE_NUMERIC)
+            return String.valueOf(cell.getNumericCellValue());
+        else
+            return String.valueOf(cell.getStringCellValue());
     }
 }
