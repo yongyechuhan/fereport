@@ -34,8 +34,10 @@
         <javaClientGenerator targetPackage="com.fehorizon.dao" targetProject="src/main/java"
                              type="XMLMAPPER"/>
 
-        <table tableName="dept_info" domainObjectName="DeptInfo"></table>
+        <!--<table tableName="dept_info" domainObjectName="DeptInfo"></table>-->
 
-        <table tableName="subject_trans_detail" domainObjectName="SubjectTransDetail"></table>
+        <!--<table tableName="subject_trans_detail" domainObjectName="SubjectTransDetail"></table>-->
+
+        <table tableName="subject_reverse" domainObjectName="SubjectReverse"></table>
     </context>
 </generatorConfiguration>

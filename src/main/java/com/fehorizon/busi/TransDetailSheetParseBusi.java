@@ -108,7 +108,7 @@ public class TransDetailSheetParseBusi extends ExcelParseBusi{
                 transAmt = transAmt.replace("(", "").replace(")", "");
             }
             BigDecimal bigDecimal = new BigDecimal(transAmt);
-            bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+            bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
             transDetail.setTransAmt(symbol.concat(bigDecimal.toString()));
             transDetail.setSubPlatform(subPlatForm);
             transDetail.setRowNum(i);

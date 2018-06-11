@@ -29,4 +29,27 @@
   <update id="clearTableRecords">
     truncate table subject_trans_detail
   </update>
+
+  <select id="sumSubjectTransAmts" resultMap="BaseResultMap">
+    select other_mer, subject_name, sum(trans_amt) as trans_amt
+    from subject_trans_detail
+    where fill_mer = #{fillMer,jdbcType=VARCHAR}
+    <if test="subjectNames != null">
+      and subject_name in
+      <foreach collection="list" item="subjectName" open="(" separator="," close=")">
+        #{subjectName,jdbcType=VARCHAR}
+      </foreach>
+    </if>
+    group by subject_name
+  </select>
+
+  <select id="getUnMatchCellInf" resultMap="BaseResultMap">
+    select sheet_name, row_num
+    from subject_trans_detail
+    where fill_mer = #{fillMer,jdbcType=VARCHAR}
+    and subject_name in
+    <foreach collection="list" item="subjectName" open="(" separator="," close=")">
+      #{subjectName,jdbcType=VARCHAR}
+    </foreach>
+  </select>
 </mapper>
