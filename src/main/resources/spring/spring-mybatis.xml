@@ -50,12 +50,12 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="typeAliasesPackage" value="com.chinatvpay.report.model" />
 		<property name="configLocation" value="classpath:sqlMapConfig.xml" />
-		<property name="mapperLocations" value="classpath*:mappers/DeptInfoMapper.xml" />
+		<property name="mapperLocations" value="classpath:mappers/*.xml" />
 	</bean>
 
 	<!-- spring与mybatis整合配置，扫描所有dao -->
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.chinatvpay.report.dao" />
+		<property name="basePackage" value="com.fehorizon.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
 

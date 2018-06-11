@@ -64,7 +64,7 @@ public class ApplicationContextUtil {
 	 */
 	private static synchronized void initApplicationContext() {
 		if (null == context) {
-			context = new ClassPathXmlApplicationContext("classpath*:spring*.xml");
+			context = new ClassPathXmlApplicationContext("classpath:spring/*.xml");
 		}
 	}
 }

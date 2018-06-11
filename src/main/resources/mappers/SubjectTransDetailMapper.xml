@@ -21,8 +21,8 @@
     <foreach collection="list" item="transDetail" separator=",">
       (#{transDetail.fillMer,jdbcType=VARCHAR}, #{transDetail.otherMer,jdbcType=VARCHAR},
       #{transDetail.subjectType,jdbcType=VARCHAR}, #{transDetail.subjectName,jdbcType=VARCHAR},
-      #{transDetail.transAmt,jdbcType=VARCHAR}, #{transDetail.subPlatform.jdbcType=VARCHAR},
-      #{transDetail.rowNum,jdbcType="INTEGER"}, #{transDetail.sheetName,jdbcType=VARCHAR})
+      #{transDetail.transAmt,jdbcType=VARCHAR}, #{transDetail.subPlatform,jdbcType=VARCHAR},
+      #{transDetail.rowNum,jdbcType=INTEGER}, #{transDetail.sheetName,jdbcType=VARCHAR})
     </foreach>
   </insert>
 

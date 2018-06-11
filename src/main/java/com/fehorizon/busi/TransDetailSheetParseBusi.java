@@ -36,6 +36,7 @@ public class TransDetailSheetParseBusi extends ExcelParseBusi{
 
         if(deptInfs == null || deptInfs.size() < 1){
             logger.error("部门信息获取失败，退出科目账务明细表格解析");
+            return;
         }
 
         int deptNums = deptInfs.size();
@@ -48,7 +49,7 @@ public class TransDetailSheetParseBusi extends ExcelParseBusi{
                     transDetails.addAll(deptTransDetails);
                 logger.info("已解析表格【{}】,还剩余【{}】个表格等待解析", sheetName, --deptNums);
             } catch (Exception e) {
-                logger.error("解析部门【{}】交易明细失败", e);
+                logger.error("解析部门【{}】交易明细失败", sheetName, e);
                 return;
             }
         }
@@ -66,10 +67,10 @@ public class TransDetailSheetParseBusi extends ExcelParseBusi{
      * @return 数据库储存格式的交易数据
      */
     private List<SubjectTransDetail> parseSheet(String sheetName) throws Exception {
-        List<SubjectTransDetail> deptTransDetails = null;
+        List<SubjectTransDetail> deptTransDetails = new ArrayList<>();
 
         Sheet sheet = loadSheetWithName(sheetName);
-        if(sheet == null) return deptTransDetails;
+        if(sheet == null) return null;
 
         int rowMax = sheet.getLastRowNum();
         for(int i = 2; i < rowMax; i++){
@@ -82,16 +83,16 @@ public class TransDetailSheetParseBusi extends ExcelParseBusi{
                 if(cell != null) cell.setCellType(Cell.CELL_TYPE_STRING);
             }
 
-            String fillMer = row.getCell(1).getStringCellValue();
-            String otherMer = row.getCell(2).getStringCellValue();
-            String reportType = row.getCell(3).getStringCellValue();
-            String subjectName = row.getCell(4).getStringCellValue();
-            String transAmt = row.getCell(5).getStringCellValue();
-            String subPlatForm = row.getCell(7).getStringCellValue();
+            String fillMer = getCellValue(row.getCell(1));
+            String otherMer = getCellValue(row.getCell(2));
+            String reportType = getCellValue(row.getCell(3));
+            String subjectName = getCellValue(row.getCell(4));
+            String transAmt = getCellValue(row.getCell(5));
+            String subPlatForm = getCellValue(row.getCell(7));
 
             if(StringUtils.isEmpty(fillMer) || StringUtils.isEmpty(otherMer)
                     || StringUtils.isEmpty(reportType) || StringUtils.isEmpty(subjectName)
-                    || "0".equals(transAmt)){
+                    || StringUtils.isEmpty(transAmt) || "0".equals(transAmt)){
                 continue;
             }
 
@@ -116,5 +117,11 @@ public class TransDetailSheetParseBusi extends ExcelParseBusi{
             deptTransDetails.add(transDetail);
         }
         return deptTransDetails;
+    }
+
+    private String getCellValue(Cell cell){
+        if(cell == null) return null;
+        else
+            return cell.getStringCellValue();
     }
 }
