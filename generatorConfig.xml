@@ -18,23 +18,24 @@
         </plugin>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://172.16.10.112:3306/yst_report?useUnicode=true&amp;characterEncoding=utf-8"
-                        userId="root" password="Changingpay#123">
+                        connectionURL="jdbc:mysql://192.168.195.128:3306/fe_report?useUnicode=true&amp;characterEncoding=utf-8"
+                        userId="gzuser" password="gzuser">
         </jdbcConnection>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.chinatvpay.report.model"
+        <javaModelGenerator targetPackage="com.fehorizon.model"
                             targetProject="src/main/java"/>
 
         <sqlMapGenerator targetPackage="mappers" targetProject="src/main/resources"/>
 
-        <javaClientGenerator targetPackage="com.chinatvpay.report.dao" targetProject="src/main/java"
+        <javaClientGenerator targetPackage="com.fehorizon.dao" targetProject="src/main/java"
                              type="XMLMAPPER"/>
 
-        <!--时间段表格-->
-        <table tableName="time_percent_count" domainObjectName="TimePercentCount"></table>
+        <table tableName="dept_info" domainObjectName="DeptInfo"></table>
+
+        <table tableName="subject_trans_detail" domainObjectName="SubjectTransDetail"></table>
     </context>
 </generatorConfiguration>

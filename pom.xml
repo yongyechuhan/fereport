@@ -337,32 +337,16 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<jdbc.url><![CDATA[jdbc:mysql://192.168.195.128:3306/yst_report?useUnicode=true&characterEncoding=utf-8]]></jdbc.url>
+				<jdbc.url><![CDATA[jdbc:mysql://192.168.195.128:3306/fe_report?useUnicode=true&characterEncoding=utf-8]]></jdbc.url>
 				<jdbc.user>gzuser</jdbc.user>
 				<jdbc.password>gzuser</jdbc.password>
 
-				<console.jdbc.url><![CDATA[jdbc:mysql://192.168.195.128:3306/yst_report?useUnicode=true&characterEncoding=utf-8]]></console.jdbc.url>
+				<console.jdbc.url><![CDATA[jdbc:mysql://192.168.195.128:3306/fe_report?useUnicode=true&characterEncoding=utf-8]]></console.jdbc.url>
 				<console.jdbc.user>gzuser</console.jdbc.user>
 				<console.jdbc.password>gzuser</console.jdbc.password>
 
 				<!-- log4j配置 -->
-				<logback.fileout>/home/ftpuser/logs/${project.artifactId}.log</logback.fileout>
-				<log.level>INFO</log.level>
-			</properties>
-		</profile>
-		<profile>
-			<id>dev</id>
-			<properties>
-				<jdbc.url><![CDATA[jdbc:mysql://172.16.10.112:3306/yst_report?useUnicode=true&characterEncoding=utf-8]]></jdbc.url>
-				<jdbc.user>root</jdbc.user>
-				<jdbc.password>Changingpay#123</jdbc.password>
-
-				<console.jdbc.url><![CDATA[jdbc:mysql://172.16.10.112:3306/yst_report?useUnicode=true&characterEncoding=utf-8]]></console.jdbc.url>
-				<console.jdbc.user>root</console.jdbc.user>
-				<console.jdbc.password>Changingpay#123</console.jdbc.password>
-
-				<!-- log4j配置 -->
-				<logback.fileout>/home/ftpuser/logs/${project.artifactId}.log</logback.fileout>
+				<logback.fileout>E:\\usr\local\proc\tomcat-server\logs\${project.artifactId}.log</logback.fileout>
 				<log.level>INFO</log.level>
 			</properties>
 		</profile>

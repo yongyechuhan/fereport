@@ -1,7 +1,7 @@
 package com.fehorizon.busi;
 
 import com.alibaba.fastjson.JSON;
-import com.fehorizon.model.TestModel;
+import com.fehorizon.model.SummaryTransData;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -24,14 +24,19 @@ public class SummarySheetParseBusi extends ExcelParseBusi{
     private Logger logger = LoggerFactory.getLogger(SummarySheetParseBusi.class);
 
     // 商户各科目交易汇总金额
-    public Map<String, List<TestModel>> transAmtMap = new HashMap<>();
+    public Map<String, List<SummaryTransData>> transAmtMap = new HashMap<>();
 
     private static final String sheetName = "Summary";
 
     public void parseSheet(){
-        Sheet sheet = loadSheetWithName(sheetName);
-        if(sheet == null){
+        Sheet sheet = null;
+        try {
+            sheet = loadSheetWithName(sheetName);
+        } catch (Exception e){
             logger.error("加载汇总表格【{}】失败", sheetName);
+        }
+        if (sheet == null) {
+            return;
         }
 
         int maxRow = sheet.getLastRowNum();
@@ -42,7 +47,7 @@ public class SummarySheetParseBusi extends ExcelParseBusi{
             Row row = sheet.getRow(i);
             int columnMax = row.getLastCellNum();
 
-            List<TestModel> testModels;
+            List<SummaryTransData> testModels;
             int columnStartIndex = 0;
             while(columnStartIndex < columnMax){
                 for(int j = 1; j < columnNum; j++){
@@ -71,7 +76,7 @@ public class SummarySheetParseBusi extends ExcelParseBusi{
                     transAmtMap.put(fillMer, testModels);
                 }
 
-                TestModel testModel = new TestModel();
+                SummaryTransData testModel = new SummaryTransData();
                 testModel.setFillMer(fillMer);
                 testModel.setOtherMer(otherMer);
                 testModel.setSubjectName(subjectName);

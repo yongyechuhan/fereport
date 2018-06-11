@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fehorizon.dao.SubjectTransDetailMapper">
+  <resultMap id="BaseResultMap" type="com.fehorizon.model.SubjectTransDetail">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="fill_mer" jdbcType="VARCHAR" property="fillMer" />
+    <result column="other_mer" jdbcType="VARCHAR" property="otherMer" />
+    <result column="subject_type" jdbcType="VARCHAR" property="subjectType" />
+    <result column="subject_name" jdbcType="VARCHAR" property="subjectName" />
+    <result column="trans_amt" jdbcType="VARCHAR" property="transAmt" />
+    <result column="sub_platform" jdbcType="VARCHAR" property="subPlatform" />
+    <result column="row_num" jdbcType="INTEGER" property="rowNum" />
+    <result column="sheet_name" jdbcType="VARCHAR" property="sheetName" />
+  </resultMap>
+
+  <insert id="saveBatchRecords" parameterType="com.fehorizon.model.SubjectTransDetail">
+    insert into subject_trans_detail
+    values
+    <foreach collection="list" item="transDetail" separator=",">
+      (#{transDetail.fillMer,jdbcType=VARCHAR}, #{transDetail.otherMer,jdbcType=VARCHAR},
+      #{transDetail.subjectType,jdbcType=VARCHAR}, #{transDetail.subjectName,jdbcType=VARCHAR},
+      #{transDetail.transAmt,jdbcType=VARCHAR}, #{transDetail.subPlatform.jdbcType=VARCHAR},
+      #{transDetail.rowNum,jdbcType="INTEGER"}, #{transDetail.sheetName,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <update id="clearTableRecords">
+    truncate table subject_trans_detail
+  </update>
+</mapper>

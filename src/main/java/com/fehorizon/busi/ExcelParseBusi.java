@@ -1,6 +1,6 @@
 package com.fehorizon.busi;
 
-import com.fehorizon.task.ExcelUtil;
+import com.fehorizon.utils.ExcelUtil;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
@@ -20,15 +20,33 @@ public class ExcelParseBusi {
     @Value("#{sysConfig.reportFilePath}")
     protected String reportFilePath;
 
-    protected Sheet loadSheetWithName(String sheetName){
+    private static Workbook workbook;
+
+    private static boolean initFlag = false;
+
+    private synchronized void initWorkbook(){
+        if(initFlag){
+            return;
+        }
+
         if(StringUtils.isEmpty(reportFilePath)){
             logger.error("载入文件路径为空");
-            return null;
+            return;
         }
-        Workbook workbook = ExcelUtil.loadExcel(reportFilePath);
-        if(workbook == null){
-            return null;
+
+        workbook = ExcelUtil.loadExcel(reportFilePath);
+        if(workbook != null){
+            initFlag = true;
         }
-        return workbook.getSheet(sheetName);
+    }
+
+    protected Sheet loadSheetWithName(String sheetName) throws Exception {
+        if(!initFlag){
+            initWorkbook();
+        }
+        if(workbook != null)
+            return workbook.getSheet(sheetName);
+        else
+            throw new Exception("workbook init error");
     }
 }
